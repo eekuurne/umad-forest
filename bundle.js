@@ -34810,7 +34810,7 @@ function handleOrientation(event) {
 }
 
 function handleMotion(event) {
-  const text = Math.floor(event.rotationRate.alpha);
+  const text = Math.floor(event.rotationRate.gamma);
   $('#acceleration').text(text);
 }
 
