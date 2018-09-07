@@ -34790,10 +34790,17 @@ $('#toggle').click(() => {
   $('#state').text(state);
 });
 
+function getVolume(normalized) {
+  const value = normalized < 0.5 ?
+    normalized * 2 :
+    (1 - (normalized * 2)) + 1;
+
+  return ((-layerMinValue + layerMaxValue) * value) + layerMinValue;
+}
+
 function handleOrientation(event) {
   const value = event.alpha / 360.0;
-  const volume = ((-layerMinValue + layerMaxValue) * value) + layerMinValue;
-  players.get('layer').volume.value = volume;
+  players.get('layer').volume.value = getVolume(value);
 
   const text = Math.floor(event.alpha);
   $('#value').text(text);
@@ -34811,8 +34818,7 @@ let layerVolume = 0;
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
     const value = this.value / 360;
-    const volume = ((-layerMinValue + layerMaxValue) * value) + layerMinValue;
-    players.get('layer').volume.value = volume;
+    players.get('layer').volume.value = getVolume(value);
 
     const text = Math.floor(this.value);
     $('#value').text(text);
