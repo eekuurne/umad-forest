@@ -1,39 +1,49 @@
 const $ = require('jquery');
 const Tone = require('tone');
 
-const maxCutoff = 8000;
+const layerMinValue = -20;
+const layerMaxValue = 5;
 
-const filter = new Tone.Filter({
-  type: 'lowpass',
-  frequency: 0,
-  rolloff: -24,
-  Q: 1,
-  gain: 0
-});
+const players = new Tone.Players({
+  bg: 'audio/bg.mp3',
+  drone: 'audio/drone.mp3',
+  layer: 'audio/layer.mp3'
+}, () => {
+  console.log('samples ready');
+  main();
+}).toMaster();
 
-const osc = new Tone.Oscillator({
-  type: 'sawtooth',
-  frequency : 220
-});
+function main() {
+  const bg = players.get('bg');
+  const drone = players.get('drone');
+  const layer = players.get('layer');
 
-osc.connect(filter);
-filter.toMaster();
+  bg.loop = true;
+  drone.loop = true;
+  layer.loop = true;
+  layer.volume.value = layerMinValue;
+}
 
 let running = false;
 $('#toggle').click(() => {
   running = !running;
   if (running) {
-    osc.start();
+    players.get('bg').start();
+    players.get('drone').start();
+    players.get('layer').start();
   } else {
-    osc.stop();
+    players.get('bg').stop();
+    players.get('drone').stop();
+    players.get('layer').stop();
   }
   const state = running ? 'playing' : 'stopped';
   $('#state').text(state);
 });
 
 function handleOrientation(event) {
-  const cutoff = Math.floor(event.alpha / 360 * maxCutoff);
-  filter.frequency.linearRampToValueAtTime(cutoff, 0);
+  const value = event.alpha / 360.0;
+  const volume = ((-layerMinValue + layerMaxValue) * value) + layerMinValue;
+  players.get('layer').volume.value = volume;
 
   const text = Math.floor(event.alpha);
   $('#value').text(text);
@@ -46,11 +56,13 @@ window.addEventListener('deviceorientation', handleOrientation);
 var slider = document.getElementById("myRange");
 
 let lastPlayed = Date.now();
+let layerVolume = 0;
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
-    const cutoff = Math.floor(this.value / 360 * maxCutoff);
-    filter.frequency.linearRampToValueAtTime(cutoff, 0);
+    const value = this.value / 360;
+    const volume = ((-layerMinValue + layerMaxValue) * value) + layerMinValue;
+    players.get('layer').volume.value = volume;
 
     const text = Math.floor(this.value);
     $('#value').text(text);
@@ -60,7 +72,7 @@ slider.oninput = function() {
     window.setTimeout(
       function() {
         if (Date.now() > lastPlayed + 199) {
-          filter.frequency.linearRampToValueAtTime(0, 0);
+          players.get('layer').volume.value = layerMinValue;
         }
       }, 200);
 }
