@@ -105,7 +105,7 @@ window.addEventListener('devicemotion', handleMotion, true);
 
 var slider = document.getElementById("myRange");
 let lastPlayed = Date.now();
-let clickTempo = 220;
+let clickTempo = 300;
 
 slider.oninput = function() {
     const value = this.value / 360;
