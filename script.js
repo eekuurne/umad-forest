@@ -66,12 +66,12 @@ function handleMotion(event) {
     value = accelerometerMaxValue;
   }
 
-  const delay = clickTempo - value;
-  if (delay > 30) {
+  $('#acceleration').text(value);
+
+  if (value > 30 && running) {
+    const delay = clickTempo - value;
     throttledFunctionCall(playClick, delay);
   }
-
-  $('#acceleration').text(delay);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
