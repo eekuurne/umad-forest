@@ -34753,6 +34753,7 @@ const Tone = require('tone');
 
 const layerMinValue = -20;
 const layerMaxValue = 5;
+const accelerometerMaxValue = 200;
 
 const players = new Tone.Players({
   bg: 'audio/bg.mp3',
@@ -34810,8 +34811,12 @@ function handleOrientation(event) {
 }
 
 function handleMotion(event) {
-  const text = Math.floor(event.rotationRate.gamma);
-  $('#acceleration').text(text);
+  let value = Math.floor(Math.abs(event.rotationRate.gamma));
+  if (value > accelerometerMaxValue) {
+    value = accelerometerMaxValue;
+  }
+
+  $('#acceleration').text(value);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
