@@ -6,7 +6,19 @@
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
-    <button id="toggle">Start/stop</button>
+
+    <h1>UMAD Interactive Forest Statue: Reclamation</h1>
+
+    <h2>Step 1: Initialize the sounds</h2>
+
+    <button class="init-button" id="initLarge">Large</button>
+    <button class="init-button" id="initMedium">Medium</button>
+    <button class="init-button" id="initSmall">Small</button>
+
+    <h2>Step 2: Start playing the sounds</h2>
+    <button class="init-button" id="toggle">Start/stop</button>
+
+    <h2>Data</h2>
     <p id="value"></p>
     <p id="acceleration"></p>
     <p id="state">stopped</p>
@@ -14,6 +26,8 @@
     <div class="slidecontainer">
       <input type="range" min="0" max="359" value="50" class="slider" id="myRange">
     </div>
+
+    
 
     <script src="bundle.js"></script>
   </body>

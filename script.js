@@ -4,15 +4,33 @@ const Tone = require('tone');
 const layerMinValue = -20;
 const layerMaxValue = 5;
 
-const players = new Tone.Players({
-  bg: 'audio/bg.mp3',
-  drone: 'audio/drone.mp3',
-  layer: 'audio/layer.mp3',
-  click: 'audio/click.wav'
-}, () => {
-  console.log('samples ready');
-  main();
-}).toMaster();
+let players = {};
+let soundsInitialized = false;
+
+$('#initLarge').click(() => {
+  initSoundFiles('audio/bg.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/click.wav');
+});
+
+$('#initMedium').click(() => {
+  initSoundFiles('audio/bg.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/click.wav');
+});
+
+$('#initSmall').click(() => {
+  initSoundFiles('audio/bg.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/click.wav');
+});
+
+function initSoundFiles(bgPath, dronePath, layerPath, clickPath) {
+  players = new Tone.Players({
+    bg: bgPath,
+    drone: dronePath,
+    layer: layerPath,
+    click: clickPath
+  }, () => {
+    console.log('samples ready');
+    main();
+    soundsInitialized = true;
+  }).toMaster();
+}
 
 function main() {
   const bg = players.get('bg');
@@ -29,18 +47,20 @@ function main() {
 
 let running = false;
 $('#toggle').click(() => {
-  running = !running;
-  if (running) {
-    players.get('bg').start();
-    players.get('drone').start();
-    players.get('layer').start();
-  } else {
-    players.get('bg').stop();
-    players.get('drone').stop();
-    players.get('layer').stop();
+  if (soundsInitialized) {
+    running = !running;
+    if (running) {
+      players.get('bg').start();
+      players.get('drone').start();
+      players.get('layer').start();
+    } else {
+      players.get('bg').stop();
+      players.get('drone').stop();
+      players.get('layer').stop();
+    }
+    const state = running ? 'playing' : 'stopped';
+    $('#state').text(state);
   }
-  const state = running ? 'playing' : 'stopped';
-  $('#state').text(state);
 });
 
 function getVolume(normalized) {
