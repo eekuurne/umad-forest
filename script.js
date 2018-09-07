@@ -2,8 +2,8 @@ const $ = require('jquery');
 const Tone = require('tone');
 
 const layerMinValue = -18;
-const layerMaxValue = 1;
-const accelerometerMaxValue = 180;
+const layerMaxValue = -3;
+const accelerometerMaxValue = 190;
 
 let players = null;
 let soundsInitialized = false;
@@ -105,7 +105,7 @@ window.addEventListener('devicemotion', handleMotion, true);
 
 var slider = document.getElementById("myRange");
 let lastPlayed = Date.now();
-let clickTempo = 300;
+let clickTempo = 260;
 
 slider.oninput = function() {
     const value = this.value / 360;
