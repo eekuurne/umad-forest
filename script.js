@@ -3,6 +3,7 @@ const Tone = require('tone');
 
 const layerMinValue = -20;
 const layerMaxValue = 5;
+const accelerometerMaxValue = 200;
 
 let players = {};
 let soundsInitialized = false;
@@ -41,8 +42,11 @@ function main() {
   bg.loop = true;
   drone.loop = true;
   layer.loop = true;
-  click.loop = false;
   layer.volume.value = layerMinValue;
+  click.loop = false;
+  click.volume.value = -20;
+
+  $('#initialized').text('ok!');
 }
 
 let running = false;
@@ -80,12 +84,21 @@ function handleOrientation(event) {
 }
 
 function handleMotion(event) {
-  const text = event.rotationRate.alpha;
-  $('#acceleration').text(text);
+  let value = Math.floor(Math.abs(event.rotationRate.gamma));
+  if (value > accelerometerMaxValue) {
+    value = accelerometerMaxValue;
+  }
+
+  $('#acceleration').text(value);
+
+  if (value > 30 && running) {
+    const delay = clickTempo - value;
+    throttledFunctionCall(playClick, delay);
+  }
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
-window.addEventListener('devicemotion', handleMotion);
+window.addEventListener('devicemotion', handleMotion, true);
 
 /* Slider */
 
@@ -93,8 +106,7 @@ var slider = document.getElementById("myRange");
 
 let lastPlayed = Date.now();
 
-let clickTempo = 200;
-const clickMinTempo = 50;
+let clickTempo = 220;
 const clickMaxTempo = 300;
 
 // Update the current slider value (each time you drag the slider handle)
@@ -107,7 +119,7 @@ slider.oninput = function() {
 
     lastPlayed = Date.now();
 
-    throttledFunctionCall(playClick, clickTempo);
+    throttledFunctionCall(playClick, clickTempo );
 
     window.setTimeout(
       function() {
@@ -120,9 +132,6 @@ slider.oninput = function() {
 
 function playClick() {
   players.get('click').start();
-  if (clickTempo > clickMinTempo) {
-    clickTempo -= 3;
-  }
 }
 
 let calledFunctions = {};
