@@ -24,8 +24,9 @@ function main() {
   bg.loop = true;
   drone.loop = true;
   layer.loop = true;
-  click.loop = false;
   layer.volume.value = layerMinValue;
+  click.loop = false;
+  click.volume.value = -20;
 }
 
 let running = false;
