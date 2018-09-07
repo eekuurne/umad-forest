@@ -34751,9 +34751,9 @@ return jQuery;
 const $ = require('jquery');
 const Tone = require('tone');
 
-const layerMinValue = -20;
-const layerMaxValue = 5;
-const accelerometerMaxValue = 200;
+const layerMinValue = -18;
+const layerMaxValue = 1;
+const accelerometerMaxValue = 180;
 
 let players = null;
 let soundsInitialized = false;
@@ -34844,7 +34844,7 @@ function handleMotion(event) {
 
   $('#acceleration').text(value);
 
-  if (value > 30 && running) {
+  if (value > 35 && running) {
     const delay = clickTempo - value;
     throttledFunctionCall(playClick, delay);
   }
