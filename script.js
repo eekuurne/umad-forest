@@ -27,6 +27,8 @@ function main() {
   layer.volume.value = layerMinValue;
   click.loop = false;
   click.volume.value = -20;
+
+  $('#initialized').text('ok!');
 }
 
 let running = false;
