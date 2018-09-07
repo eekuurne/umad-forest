@@ -66,7 +66,10 @@ function handleMotion(event) {
     value = accelerometerMaxValue;
   }
 
-  $('#acceleration').text(value);
+  const tempo = clickTempo - value;
+  throttledFunctionCall(playClick, tempo);
+
+  $('#acceleration').text(tempo);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
@@ -78,8 +81,7 @@ var slider = document.getElementById("myRange");
 
 let lastPlayed = Date.now();
 
-let clickTempo = 200;
-const clickMinTempo = 50;
+let clickTempo = 220;
 const clickMaxTempo = 300;
 
 // Update the current slider value (each time you drag the slider handle)
@@ -92,7 +94,7 @@ slider.oninput = function() {
 
     lastPlayed = Date.now();
 
-    throttledFunctionCall(playClick, clickTempo);
+    throttledFunctionCall(playClick, clickTempo );
 
     window.setTimeout(
       function() {
