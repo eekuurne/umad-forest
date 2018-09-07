@@ -4,7 +4,7 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "watch": "watchify script.js -o bundle.js",
+    "watch": "watchify script.js -o bundle.js & http-server -a localhost -p 8000 -c-1",
     "build": "browserify script.js -o bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "browserify": "^16.1.1",
+    "http-server": "^0.11.1",
     "watchify": "^3.11.0"
   },
   "dependencies": {
