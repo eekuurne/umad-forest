@@ -34757,7 +34757,8 @@ const layerMaxValue = 5;
 const players = new Tone.Players({
   bg: 'audio/bg.mp3',
   drone: 'audio/drone.mp3',
-  layer: 'audio/layer.mp3'
+  layer: 'audio/layer.mp3',
+  click: 'audio/click.wav'
 }, () => {
   console.log('samples ready');
   main();
@@ -34767,10 +34768,12 @@ function main() {
   const bg = players.get('bg');
   const drone = players.get('drone');
   const layer = players.get('layer');
+  const click = players.get('click');
 
   bg.loop = true;
   drone.loop = true;
   layer.loop = true;
+  click.loop = false;
   layer.volume.value = layerMinValue;
 }
 
@@ -34808,6 +34811,10 @@ var slider = document.getElementById("myRange");
 let lastPlayed = Date.now();
 let layerVolume = 0;
 
+let clickTempo = 200;
+const clickMinTempo = 50;
+const clickMaxTempo = 300;
+
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
     const value = this.value / 360;
@@ -34819,12 +34826,44 @@ slider.oninput = function() {
 
     lastPlayed = Date.now();
 
+    throttledFunctionCall(playClick, clickTempo);
+
     window.setTimeout(
       function() {
         if (Date.now() > lastPlayed + 199) {
           players.get('layer').volume.value = layerMinValue;
+          clickTempo = 200;
         }
       }, 200);
+}
+
+function playClick() {
+  players.get('click').start();
+  if (clickTempo > clickMinTempo) {
+    clickTempo -= 3;
+  }
+}
+
+let calledFunctions = {};
+
+function throttledFunctionCall(functionCall, maxFrequency) {
+  let key = functionCall.toString();
+  
+  if (!(key in calledFunctions)) {
+    calledFunctions[key] = {firstCall: false, secondCall: false};
+  }
+  if (!calledFunctions[key].firstCall) {
+    instantCall(functionCall, key, maxFrequency);
+  } 
+};
+
+function instantCall(functionCall, key, maxFrequency) {
+  functionCall();
+  calledFunctions[key].firstCall = true;
+  window.setTimeout(
+    function() {
+      calledFunctions[key].firstCall = false;
+  }, maxFrequency)
 }
 
 },{"jquery":1,"tone":2}]},{},[3]);
