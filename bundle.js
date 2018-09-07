@@ -34794,12 +34794,14 @@ window.addEventListener('deviceorientation', handleOrientation);
 /* Slider */
 
 var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
-    output.innerHTML = this.value;
+    const cutoff = Math.floor(this.value / 360 * maxCutoff);
+    filter.frequency.linearRampToValueAtTime(cutoff, 0);
+
+    const text = Math.floor(this.value);
+    $('#value').text(text);
 }
 
 },{"jquery":1,"tone":2}]},{},[3]);
