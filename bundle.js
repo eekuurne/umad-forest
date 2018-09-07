@@ -34795,6 +34795,8 @@ window.addEventListener('deviceorientation', handleOrientation);
 
 var slider = document.getElementById("myRange");
 
+let lastPlayed = Date.now();
+
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
     const cutoff = Math.floor(this.value / 360 * maxCutoff);
@@ -34802,6 +34804,15 @@ slider.oninput = function() {
 
     const text = Math.floor(this.value);
     $('#value').text(text);
+
+    lastPlayed = Date.now();
+
+    window.setTimeout(
+      function() {
+        if (Date.now() > lastPlayed + 199) {
+          filter.frequency.linearRampToValueAtTime(0, 0);
+        }
+      }, 200);
 }
 
 },{"jquery":1,"tone":2}]},{},[3]);
