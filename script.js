@@ -5,22 +5,28 @@ const layerMinValue = -20;
 const layerMaxValue = 5;
 const accelerometerMaxValue = 200;
 
-let players = {};
+let players = null;
 let soundsInitialized = false;
 
 $('#initLarge').click(() => {
-  initSoundFiles('audio/bg.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/click.wav');
+  initSoundFiles('audio/BGL.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/ClickL.wav');
 });
 
 $('#initMedium').click(() => {
-  initSoundFiles('audio/bg.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/click.wav');
+  initSoundFiles('audio/BGM.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/ClickM.wav');
 });
 
 $('#initSmall').click(() => {
-  initSoundFiles('audio/bg.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/click.wav');
+  initSoundFiles('audio/BGS.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/ClickS.wav');
 });
 
 function initSoundFiles(bgPath, dronePath, layerPath, clickPath) {
+  if (players != null) {
+    players.stopAll();
+    running = false;
+    const state = running ? 'playing' : 'stopped';
+    $('#state').text(state);
+  }
   players = new Tone.Players({
     bg: bgPath,
     drone: dronePath,
@@ -44,7 +50,7 @@ function main() {
   layer.loop = true;
   layer.volume.value = layerMinValue;
   click.loop = false;
-  click.volume.value = -20;
+  //click.volume.value = -20;
 
   $('#initialized').text('ok!');
 }
@@ -52,15 +58,12 @@ function main() {
 let running = false;
 $('#toggle').click(() => {
   if (soundsInitialized) {
+    players.stopAll();
     running = !running;
     if (running) {
       players.get('bg').start();
       players.get('drone').start();
       players.get('layer').start();
-    } else {
-      players.get('bg').stop();
-      players.get('drone').stop();
-      players.get('layer').stop();
     }
     const state = running ? 'playing' : 'stopped';
     $('#state').text(state);
@@ -100,16 +103,10 @@ function handleMotion(event) {
 window.addEventListener('deviceorientation', handleOrientation);
 window.addEventListener('devicemotion', handleMotion, true);
 
-/* Slider */
-
 var slider = document.getElementById("myRange");
-
 let lastPlayed = Date.now();
-
 let clickTempo = 220;
-const clickMaxTempo = 300;
 
-// Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
     const value = this.value / 360;
     players.get('layer').volume.value = getVolume(value);
