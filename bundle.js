@@ -34751,23 +34751,23 @@ return jQuery;
 const $ = require('jquery');
 const Tone = require('tone');
 
-const layerMinValue = -18;
-const layerMaxValue = -3;
+const layerMinValue = -19;
+const layerMaxValue = -5;
 const accelerometerMaxValue = 190;
 
 let players = null;
 let soundsInitialized = false;
 
 $('#initLarge').click(() => {
-  initSoundFiles('audio/BGL.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/ClickL.wav');
+  initSoundFiles('audio/BGL.mp3', 'audio/DroneL.mp3', 'audio/LayerL.mp3', 'audio/ClickL.wav');
 });
 
 $('#initMedium').click(() => {
-  initSoundFiles('audio/BGM.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/ClickM.wav');
+  initSoundFiles('audio/BGM.mp3', 'audio/DroneM.mp3', 'audio/LayerM.mp3', 'audio/ClickM.wav');
 });
 
 $('#initSmall').click(() => {
-  initSoundFiles('audio/BGS.mp3', 'audio/drone.mp3', 'audio/layer.mp3', 'audio/ClickS.wav');
+  initSoundFiles('audio/BGS.mp3', 'audio/DroneS.mp3', 'audio/LayerS.mp3', 'audio/ClickS.wav');
 });
 
 function initSoundFiles(bgPath, dronePath, layerPath, clickPath) {
@@ -34844,7 +34844,7 @@ function handleMotion(event) {
 
   $('#acceleration').text(value);
 
-  if (value > 35 && running) {
+  if (value > 30 && running) {
     const delay = clickTempo - value;
     throttledFunctionCall(playClick, delay);
   }
@@ -34855,7 +34855,7 @@ window.addEventListener('devicemotion', handleMotion, true);
 
 var slider = document.getElementById("myRange");
 let lastPlayed = Date.now();
-let clickTempo = 260;
+let clickTempo = 240;
 
 slider.oninput = function() {
     const value = this.value / 360;
