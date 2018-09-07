@@ -59,14 +59,19 @@ function handleOrientation(event) {
   $('#value').text(text);
 }
 
+function handleMotion(event) {
+  const text = event.rotationRate.alpha;
+  $('#acceleration').text(text);
+}
+
 window.addEventListener('deviceorientation', handleOrientation);
+window.addEventListener('devicemotion', handleMotion);
 
 /* Slider */
 
 var slider = document.getElementById("myRange");
 
 let lastPlayed = Date.now();
-let layerVolume = 0;
 
 let clickTempo = 200;
 const clickMinTempo = 50;
