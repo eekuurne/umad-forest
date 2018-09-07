@@ -60,12 +60,12 @@ function handleOrientation(event) {
 }
 
 function handleMotion(event) {
-  const text = event.rotationRate.alpha;
+  const text = Math.floor(event.rotationRate.alpha);
   $('#acceleration').text(text);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
-window.addEventListener('devicemotion', handleMotion);
+window.addEventListener('devicemotion', handleMotion, true);
 
 /* Slider */
 
