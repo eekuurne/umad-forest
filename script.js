@@ -1,31 +1,42 @@
-var ball   = document.querySelector('.ball');
-var garden = document.querySelector('.garden');
-var output = document.querySelector('.output');
+const $ = require('jquery');
+const Tone = require('tone');
 
-var maxX = garden.clientWidth  - ball.clientWidth;
-var maxY = garden.clientHeight - ball.clientHeight;
+const maxCutoff = 8000;
+
+const filter = new Tone.Filter({
+  type: 'lowpass',
+  frequency: 0,
+  rolloff: -24,
+  Q: 1,
+  gain: 0
+});
+
+const osc = new Tone.Oscillator({
+  type: 'sawtooth',
+  frequency : 220
+});
+
+osc.connect(filter);
+filter.toMaster();
+
+let running = false;
+$('#toggle').click(() => {
+  running = !running;
+  if (running) {
+    osc.start();
+  } else {
+    osc.stop();
+  }
+  const state = running ? 'playing' : 'stopped';
+  $('#state').text(state);
+});
 
 function handleOrientation(event) {
-  var x = event.beta;  // In degree in the range [-180,180]
-  var y = event.gamma; // In degree in the range [-90,90]
+  const cutoff = Math.floor(event.alpha / 360 * maxCutoff);
+  filter.frequency.linearRampToValueAtTime(cutoff, 0);
 
-  output.innerHTML  = "beta : " + x + "\n";
-  output.innerHTML += "gamma: " + y + "\n";
-
-  // Because we don't want to have the device upside down
-  // We constrain the x value to the range [-90,90]
-  if (x >  90) { x =  90};
-  if (x < -90) { x = -90};
-
-  // To make computation easier we shift the range of 
-  // x and y to [0,180]
-  x += 90;
-  y += 90;
-
-  // 10 is half the size of the ball
-  // It center the positioning point to the center of the ball
-  ball.style.top  = (maxX*x/180 - 10) + "px";
-  ball.style.left = (maxY*y/180 - 10) + "px";
+  const text = Math.floor(event.alpha);
+  $('#value').text(text);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
