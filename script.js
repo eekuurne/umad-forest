@@ -66,10 +66,12 @@ function handleMotion(event) {
     value = accelerometerMaxValue;
   }
 
-  const tempo = clickTempo - value;
-  throttledFunctionCall(playClick, tempo);
+  const delay = clickTempo - value;
+  if (delay > 30) {
+    throttledFunctionCall(playClick, delay);
+  }
 
-  $('#acceleration').text(tempo);
+  $('#acceleration').text(delay);
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
@@ -107,9 +109,6 @@ slider.oninput = function() {
 
 function playClick() {
   players.get('click').start();
-  if (clickTempo > clickMinTempo) {
-    clickTempo -= 3;
-  }
 }
 
 let calledFunctions = {};
