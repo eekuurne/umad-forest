@@ -5,8 +5,8 @@ const layerMinValue = -50;
 const layerMaxValue = -2;
 const accelerometerMaxValue = 190;
 
-const droneMinValue = -15;
-const droneMaxValue = 3;
+const droneMinValue = -9;
+const droneMaxValue = 0;
 
 let players = null;
 let soundsInitialized = false;
@@ -87,11 +87,10 @@ function getVolume(normalized) {
 function handleOrientation(event) {
   const value = event.alpha / 360.0;
   players.get('layer').volume.value = getVolume(value);
+  players.get('drone').volume.value = getDroneVolume(Math.floor(event.alpha));
 
   const text = Math.floor(event.alpha);
   $('#value').text(text);
-
-  throttledFunctionCall(setDroneVolume(Math.floor(event.alpha)), 200);
 }
 
 function handleMotion(event) {
@@ -108,12 +107,11 @@ function handleMotion(event) {
   }
 }
 
-function setDroneVolume(value) {
+function getDroneVolume(value) {
   if (value > 30 && value < 330) {
-    players.get('drone').volume.value = droneMaxValue;
-  } else {
-    players.get('drone').volume.value = droneMinValue;
+     return droneMaxValue;
   }
+  return droneMinValue;
 }
 
 window.addEventListener('deviceorientation', handleOrientation);
@@ -126,6 +124,7 @@ let clickTempo = 240;
 slider.oninput = function() {
     const value = this.value / 360;
     players.get('layer').volume.value = getVolume(value);
+    players.get('drone').volume.value = getDroneVolume(this.value);
 
     const text = Math.floor(this.value);
     $('#value').text(text);
