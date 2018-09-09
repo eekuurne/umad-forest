@@ -34752,11 +34752,15 @@ const $ = require('jquery');
 const Tone = require('tone');
 
 const layerMinValue = -50;
-const layerMaxValue = -2;
+const layerMaxValue = 28;
 const accelerometerMaxValue = 190;
 
-const droneMinValue = -15;
-const droneMaxValue = -6;
+const droneMinValue = 18;
+const droneMaxValue = 24;
+
+const bgValue = 30;
+
+const clickValue = 30;
 
 let players = null;
 let soundsInitialized = false;
@@ -34799,14 +34803,13 @@ function main() {
   const click = players.get('click');
 
   bg.loop = true;
+  bg.volume.value = bgValue;
   drone.loop = true;
   drone.volume.value = droneMinValue;
   layer.loop = true;
   layer.volume.value = layerMinValue;
   click.loop = false;
-  //click.volume.value = -20;
-
-  console.log(drone.volume.value);
+  click.volume.value = clickValue;
 
   $('#initialized').text('ok!');
 }
@@ -34880,14 +34883,6 @@ slider.oninput = function() {
     lastPlayed = Date.now();
 
     throttledFunctionCall(playClick, clickTempo );
-
-    window.setTimeout(
-      function() {
-        if (Date.now() > lastPlayed + 199) {
-          players.get('layer').volume.value = layerMinValue;
-          clickTempo = 200;
-        }
-      }, 200);
 }
 
 function playClick() {
