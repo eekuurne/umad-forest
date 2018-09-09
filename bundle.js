@@ -34756,7 +34756,7 @@ const layerMaxValue = -2;
 const accelerometerMaxValue = 190;
 
 const droneMinValue = 0;
-const droneMaxValue = 9;
+const droneMaxValue = 15;
 
 let players = null;
 let soundsInitialized = false;
