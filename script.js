@@ -1,8 +1,8 @@
 const $ = require('jquery');
 const Tone = require('tone');
 
-const layerMinValue = -19;
-const layerMaxValue = -5;
+const layerMinValue = -50;
+const layerMaxValue = -2;
 const accelerometerMaxValue = 190;
 
 const droneMinValue = -9;
