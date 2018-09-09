@@ -34835,7 +34835,7 @@ function getVolume(normalized) {
 function handleOrientation(event) {
   const value = event.alpha / 360.0;
   players.get('layer').volume.value = getVolume(value);
-  players.get('drone').volume.value = getDroneVolume(Math.floor(event.alpha));
+  players.get('drone').volume.value = getDroneVolume(event.alpha);
 
   const text = Math.floor(event.alpha);
   $('#value').text(text);
