@@ -53,3 +53,9 @@ label {
     display: none;
   }
 }
+
+@media only screen and (max-width: 991px) {
+  .desktop-only {
+    display: none;
+  }
+}

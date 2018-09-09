@@ -5,8 +5,8 @@ const layerMinValue = -50;
 const layerMaxValue = -2;
 const accelerometerMaxValue = 190;
 
-const droneMinValue = 0;
-const droneMaxValue = 15;
+const droneMinValue = -15;
+const droneMaxValue = 3;
 
 let players = null;
 let soundsInitialized = false;
@@ -50,7 +50,7 @@ function main() {
 
   bg.loop = true;
   drone.loop = true;
-  drone.volume.value = droneMinValue - droneMaxValue;
+  drone.volume.value = droneMinValue;
   layer.loop = true;
   layer.volume.value = layerMinValue;
   click.loop = false;
@@ -90,6 +90,8 @@ function handleOrientation(event) {
 
   const text = Math.floor(event.alpha);
   $('#value').text(text);
+
+  throttledFunctionCall(setDroneVolume(Math.floor(event.alpha)), 200);
 }
 
 function handleMotion(event) {
@@ -100,12 +102,17 @@ function handleMotion(event) {
 
   $('#acceleration').text(value);
 
-  let droneVolume = value / accelerometerMaxValue * droneMaxValue - droneMaxValue;
-  players.get('drone').volume.value = droneVolume;
-
   if (value > 30 && running) {
     const delay = clickTempo - value;
     throttledFunctionCall(playClick, delay);
+  }
+}
+
+function setDroneVolume(value) {
+  if (value > 30 && value < 330) {
+    players.get('drone').volume.value = droneMaxValue;
+  } else {
+    players.get('drone').volume.value = droneMinValue;
   }
 }
 
