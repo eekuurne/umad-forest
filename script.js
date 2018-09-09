@@ -77,9 +77,7 @@ $('#toggle').click(() => {
 });
 
 function getVolume(normalized) {
-  const value = normalized < 0.5 ?
-    normalized * 2 :
-    (1 - (normalized * 2)) + 1;
+  const value = Math.abs(Math.sin(normalized * Math.PI * 2));
 
   return ((-layerMinValue + layerMaxValue) * value) + layerMinValue;
 }
