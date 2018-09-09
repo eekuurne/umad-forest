@@ -34755,6 +34755,9 @@ const layerMinValue = -19;
 const layerMaxValue = -5;
 const accelerometerMaxValue = 190;
 
+const droneMinValue = -9;
+const droneMaxValue = 0;
+
 let players = null;
 let soundsInitialized = false;
 
@@ -34802,6 +34805,8 @@ function main() {
   click.loop = false;
   //click.volume.value = -20;
 
+  console.log(drone.volume.value);
+
   $('#initialized').text('ok!');
 }
 
@@ -34843,6 +34848,9 @@ function handleMotion(event) {
   }
 
   $('#acceleration').text(value);
+
+  let droneVolume = value / accelerometerMaxValue * droneMinValue;
+  players.get('drone').volume.value = droneVolume;
 
   if (value > 30 && running) {
     const delay = clickTempo - value;

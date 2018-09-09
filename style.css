@@ -40,6 +40,16 @@
 .init-button {
   display: block;
   margin-bottom: 15px;
-  width: 150px;
-  height: 40px;
+  width: 200px;
+  height: 50px;
+}
+
+label {
+  font-weight: bold;
+}
+
+@media only screen and (min-width: 992px) {
+  .mobile-only {
+    display: none;
+  }
 }
