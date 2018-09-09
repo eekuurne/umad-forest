@@ -34760,7 +34760,7 @@ const droneMaxValue = 24;
 
 const bgValue = 30;
 
-const clickValue = 30;
+const clickValue = 15;
 
 let players = null;
 let soundsInitialized = false;
