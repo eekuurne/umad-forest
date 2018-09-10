@@ -1,16 +1,16 @@
 const $ = require('jquery');
 const Tone = require('tone');
 
-const layerMinValue = -50;
-const layerMaxValue = 28;
+const layerMinValue = -51;
+const layerMaxValue = 26;
 const accelerometerMaxValue = 190;
 
-const droneMinValue = 18;
+const droneMinValue = 17;
 const droneMaxValue = 24;
 
 const bgValue = 30;
 
-const clickValue = 15;
+const clickValue = 18;
 
 let players = null;
 let soundsInitialized = false;
@@ -102,14 +102,14 @@ function handleMotion(event) {
 
   $('#acceleration').text(value);
 
-  if (value > 30 && running) {
+  if (value > 25 && running) {
     const delay = clickTempo - value;
     throttledFunctionCall(playClick, delay);
   }
 }
 
 function getDroneVolume(value) {
-  if (value > 30 && value < 330) {
+  if (value > 40 && value < 320) {
      return droneMaxValue;
   }
   return droneMinValue;
