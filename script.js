@@ -5,7 +5,7 @@ const layerMinValue = -51;
 const layerMaxValue = 26;
 const accelerometerMaxValue = 190;
 
-const droneMinValue = 17;
+const droneMinValue = 15;
 const droneMaxValue = 24;
 
 const bgValue = 30;
